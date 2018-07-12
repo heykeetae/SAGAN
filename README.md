@@ -57,9 +57,9 @@ $ bash download.sh LSUN
 #### 3. Train 
 ##### (i) Train
 ```bash
-$ python python main.py --batch_size 64 --imsize 64 --dataset celeb --adv_loss hinge --version sagan_celeb
+$ python main.py --batch_size 64 --imsize 64 --dataset celeb --adv_loss hinge --version sagan_celeb
 or
-$ python python main.py --batch_size 64 --imsize 64 --dataset lsun --adv_loss hinge --version sagan_lsun
+$ python main.py --batch_size 64 --imsize 64 --dataset lsun --adv_loss hinge --version sagan_lsun
 ```
 #### 4. Enjoy the results
 ```bash
