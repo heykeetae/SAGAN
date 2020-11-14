@@ -1,0 +1,8 @@
+__pycache__
+img_align_celeba
+test.ipynb
+models/*
+samples/*
+attn/*
+logs/*
+data/

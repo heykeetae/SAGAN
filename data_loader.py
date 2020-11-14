@@ -1,4 +1,5 @@
 import torch
+from os.path import join
 import torchvision.datasets as dsets
 from torchvision import transforms
 
@@ -31,17 +32,23 @@ class Data_Loader():
         return dataset
 
     def load_celeb(self):
+        path = join(self.path, 'CelebA')
         transforms = self.transform(True, True, True, True)
-        dataset = dsets.ImageFolder(self.path+'/CelebA', transform=transforms)
+        dataset = dsets.ImageFolder(root=path, transform=transforms)
         return dataset
 
+    def load_custom(self):
+        transforms = self.transform(True, True, True, True)
+        dataset = dsets.ImageFolder(root=self.path, transform=transforms)
+        return dataset
 
     def loader(self):
         if self.dataset == 'lsun':
             dataset = self.load_lsun()
         elif self.dataset == 'celeb':
             dataset = self.load_celeb()
-
+        elif self.dataset == 'custom':
+            dataset = self.load_custom()
         loader = torch.utils.data.DataLoader(dataset=dataset,
                                               batch_size=self.batch,
                                               shuffle=self.shuf,

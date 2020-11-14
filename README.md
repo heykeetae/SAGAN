@@ -10,7 +10,7 @@ Self-attentions are applied to later two layers of both discriminator and genera
 
 ## Current update status
 * [ ] Supervised setting
-* [ ] Tensorboard loggings
+* [x] Tensorboard loggings
 * [x] **[20180608] updated the self-attention module. Thanks to my colleague [Cheonbok Park](https://github.com/cheonbok94)! see 'sagan_models.py' for the update. Should be efficient, and run on large sized images**
 * [x] Attention visualization (LSUN Church-outdoor)
 * [x] Unsupervised setting (use no label yet) 
@@ -35,6 +35,8 @@ Per-pixel attention result of SAGAN on LSUN church-outdoor dataset. It shows tha
 ## Prerequisites
 * [Python 3.5+](https://www.continuum.io/downloads)
 * [PyTorch 0.3.0](http://pytorch.org/)
+#### For Tensorboard
+* [Tensorboard 2.0+](https://www.tensorflow.org/tensorboard)
 
 &nbsp;
 
@@ -47,11 +49,10 @@ $ cd Self-Attention-GAN
 ```
 
 #### 2. Install datasets (CelebA or LSUN)
-```bash
-$ bash download.sh CelebA
-or
-$ bash download.sh LSUN
 ```
+Save All datasets in data dir
+```
+* [Celeb](https://drive.google.com/drive/folders/0B7EVK8r0v71pTUZsaXdaSnZBZzg)
 
 
 #### 3. Train 
@@ -61,6 +62,13 @@ $ python python main.py --batch_size 64 --imsize 64 --dataset celeb --adv_loss h
 or
 $ python python main.py --batch_size 64 --imsize 64 --dataset lsun --adv_loss hinge --version sagan_lsun
 ```
+##### (ii) With Tensorboard
+```bash
+$ python python main.py --batch_size 64 --imsize 64 --dataset celeb --adv_loss hinge --version sagan_celeb --use_tensorboard
+or
+$ python python main.py --batch_size 64 --imsize 64 --dataset lsun --adv_loss hinge --version sagan_lsun --use_tensorboard
+```
+
 #### 4. Enjoy the results
 ```bash
 $ cd samples/sagan_celeb

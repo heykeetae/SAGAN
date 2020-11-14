@@ -7,7 +7,7 @@ import datetime
 import torch.nn as nn
 from torch.autograd import Variable
 from torchvision.utils import save_image
-
+from logger import image_grid_writer
 from sagan_models import Generator, Discriminator
 from utils import *
 
@@ -165,28 +165,38 @@ class Trainer(object):
             g_loss_fake.backward()
             self.g_optimizer.step()
 
-
+            iters = step+1
             # Print out log info
-            if (step + 1) % self.log_step == 0:
+            if iters % self.log_step == 0:
                 elapsed = time.time() - start_time
                 elapsed = str(datetime.timedelta(seconds=elapsed))
+                if self.use_tensorboard:
+                    self.logger.add_scalar("d_loss_real", d_loss_real.item(), iters)
+                    self.logger.add_scalar("d_loss_fake", d_loss_fake.item(), iters)
+                    self.logger.add_scalar("d_loss", d_loss.item(), iters)
+                    self.logger.add_scalar("g_loss_fake", g_loss_fake.item(),iters)
+                    self.logger.add_scalar("ave_gamma_l3", self.G.attn1.gamma.mean().item(),iters)
+                    self.logger.add_scalar("ave_gamma_l4", self.G.attn2.gamma.mean().item(), iters)
                 print("Elapsed [{}], G_step [{}/{}], D_step[{}/{}], d_out_real: {:.4f}, "
                       " ave_gamma_l3: {:.4f}, ave_gamma_l4: {:.4f}".
-                      format(elapsed, step + 1, self.total_step, (step + 1),
-                             self.total_step , d_loss_real.data[0],
-                             self.G.attn1.gamma.mean().data[0], self.G.attn2.gamma.mean().data[0] ))
+                      format(elapsed, iters, self.total_step, iters,
+                             self.total_step , d_loss_real.item(),
+                             self.G.attn1.gamma.mean().item(), self.G.attn2.gamma.mean().item() ))
 
             # Sample images
-            if (step + 1) % self.sample_step == 0:
+            if iters % self.sample_step == 0:
                 fake_images,_,_= self.G(fixed_z)
                 save_image(denorm(fake_images.data),
-                           os.path.join(self.sample_path, '{}_fake.png'.format(step + 1)))
+                           os.path.join(self.sample_path, '{}_fake.png'.format(iters)))
+                if self.use_tensorboard:
+                    image_grid_writer(self.logger, fake_images.data.clone(),"fake_image",iters)
+                    image_grid_writer(self.logger, real_images.data.clone(),"real_image",iters)
 
-            if (step+1) % model_save_step==0:
+            if (iters) % model_save_step==0:
                 torch.save(self.G.state_dict(),
-                           os.path.join(self.model_save_path, '{}_G.pth'.format(step + 1)))
+                           os.path.join(self.model_save_path, '{}_G.pth'.format(iters)))
                 torch.save(self.D.state_dict(),
-                           os.path.join(self.model_save_path, '{}_D.pth'.format(step + 1)))
+                           os.path.join(self.model_save_path, '{}_D.pth'.format(iters)))
 
     def build_model(self):
 
