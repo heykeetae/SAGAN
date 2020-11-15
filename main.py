@@ -33,7 +33,8 @@ def main(config):
         tester.test()
 
 if __name__ == '__main__':
-    os.environ['CUDA_LAUNCH_BLOCKING'] = 1
+    os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '5'
     config = get_parameters()
     print(config)
     main(config)

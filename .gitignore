@@ -5,4 +5,5 @@ models/*
 samples/*
 attn/*
 logs/*
-data/
+data/*
+env
