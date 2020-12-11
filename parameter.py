@@ -35,7 +35,7 @@ def get_parameters():
     # Misc
     parser.add_argument('--train', type=str2bool, default=True)
     parser.add_argument('--parallel', type=str2bool, default=False)
-    parser.add_argument('--dataset', type=str, default='celeb', choices=['custom', 'lsun', 'celeb'])
+    parser.add_argument('--dataset', type=str, default='celeb', choices=['semantic', 'imagenet' ,'lsun', 'celeb'])
     parser.add_argument('--use_tensorboard', action='store_true', default=False)
 
     # Path

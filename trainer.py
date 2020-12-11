@@ -8,7 +8,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 from torchvision.utils import save_image
 from logger import image_grid_writer
-from sagan_models import Generator, Discriminator
+from sagan_models import Generator, Discriminator, hqGenerator, hqDiscriminator
 from utils import *
 
 class Trainer(object):
@@ -76,6 +76,8 @@ class Trainer(object):
         model_save_step = int(self.model_save_step * step_per_epoch)
 
         # Fixed input for debugging
+
+
         fixed_z = tensor2var(torch.randn(self.batch_size, self.z_dim))
 
         # Start with trained model
@@ -200,8 +202,10 @@ class Trainer(object):
 
     def build_model(self):
 
-        self.G = Generator(self.batch_size,self.imsize, self.z_dim, self.g_conv_dim).cuda()
-        self.D = Discriminator(self.batch_size,self.imsize, self.d_conv_dim).cuda()
+        # self.G = Generator(self.batch_size,self.imsize, self.z_dim, self.g_conv_dim).cuda()
+        # self.D = Discriminator(self.batch_size,self.imsize, self.d_conv_dim).cuda()
+        self.G = hqGenerator(self.batch_size,self.imsize, self.z_dim, self.g_conv_dim).cuda()
+        self.D = hqDiscriminator(self.batch_size,self.imsize, self.d_conv_dim).cuda()
         if self.parallel:
             self.G = nn.DataParallel(self.G)
             self.D = nn.DataParallel(self.D)

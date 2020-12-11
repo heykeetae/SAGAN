@@ -34,7 +34,7 @@ def main(config):
 
 if __name__ == '__main__':
     os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
-    os.environ['CUDA_VISIBLE_DEVICES'] = '5'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '6'
     config = get_parameters()
     print(config)
     main(config)
