@@ -1,0 +1,12 @@
+__pycache__
+
+../preprocessing_mask_celebA_hq.py
+img_align_celeba
+kaggle.json
+test.ipynb
+models/*
+samples/*
+attn/*
+logs/*
+data/*
+env
